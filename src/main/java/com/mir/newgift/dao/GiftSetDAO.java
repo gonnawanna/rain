@@ -111,25 +111,23 @@ public class GiftSetDAO {
     }
 
     public ArrayList<SimpleGiftSet> selectAllById (ArrayList<Integer> giftSetsIds, String order) throws SQLException {
+        System.out.println(giftSetsIds.toString());
+        String idsList = giftSetsIds.toString();
         String SQLQuerySelectGiftSet = "SELECT name, price\n" +
-                "FROM sets WHERE set_id = ?";
+                "FROM sets WHERE set_id IN (" + idsList.substring(1, idsList.length()-1) +
+                ") ORDER BY price " + order;
+        System.out.println(SQLQuerySelectGiftSet);
         ArrayList<SimpleGiftSet> simpleGiftSets = new ArrayList<>();
-        for (Integer giftSetId : giftSetsIds) {
-            PreparedStatement ps = connection.prepareStatement(SQLQuerySelectGiftSet);
-            ps.setInt(1, giftSetId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                String name = rs.getString(1);
-                float price = rs.getFloat(2);
+        PreparedStatement ps = connection.prepareStatement(SQLQuerySelectGiftSet);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            String name = rs.getString(1);
+            float price = rs.getFloat(2);
 
-                SimpleGiftSet simpleGiftSet = new SimpleGiftSet();
-                simpleGiftSet.setName(name);
-                simpleGiftSet.setPrice(price);
-                simpleGiftSets.add(simpleGiftSet);
-            }
-        }
-        if (order.equals("ASC")) {
-            //Collections.sort(simpleGiftSets);
+            SimpleGiftSet simpleGiftSet = new SimpleGiftSet();
+            simpleGiftSet.setName(name);
+            simpleGiftSet.setPrice(price);
+            simpleGiftSets.add(simpleGiftSet);
         }
         return simpleGiftSets;
     }

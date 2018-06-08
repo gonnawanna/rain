@@ -2,7 +2,7 @@ package com.mir.newgift.model;
 
 import java.util.ArrayList;
 
-public class GiftSet extends SimpleGiftSet implements Comparable<GiftSet>{
+public class GiftSet extends SimpleGiftSet {
 
     private ArrayList<Product> products;
     private ArrayList<Integer> features1;
@@ -48,12 +48,5 @@ public class GiftSet extends SimpleGiftSet implements Comparable<GiftSet>{
         GiftSet giftSet = (GiftSet) o;
 
         return products != null ? products.containsAll(giftSet.products) : giftSet.products == null;
-    }
-
-    @Override
-    public int compareTo(GiftSet o) {
-        Float price1 = getPrice();
-        Float price2 = o.getPrice();
-        return price1.compareTo(price2);
     }
 }
